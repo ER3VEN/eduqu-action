@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eduqu'Action</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .form-container, .course-container {
+            flex: 1;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .timer-container {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        h2, h3 {
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .timer-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .timer-buttons button {
+            width: auto;
+            padding: 10px 20px;
+            background-color: #ffc107;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .timer-buttons button:hover {
+            background-color: #e0a800;
+        }
+        .course-list {
+            margin-top: 20px;
+        }
+        .course-item {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .course-content {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .timer-display {
+            text-align: center;
+            font-size: 2em;
+            margin-top: 20px;
+        }
+        .search-bar {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .theme-toggle {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .theme-toggle:hover {
+            background-color: #0056b3;
+        }
+
+        /* Dark Theme Styles */
+        body.dark {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .dark .form-container, .dark .course-container, .dark .timer-container {
+            background-color: #1e1e1e;
+            border-color: #333;
+        }
+        .dark input[type="text"], .dark textarea, .dark select, .dark .course-item, .dark .course-content {
+            background-color: #2c2c2c;
+            border-color: #555;
+        }
+        .dark button {
+            background-color: #4caf50;
+        }
+        .dark button:hover {
+            background-color: #45a049;
+        }
+        .dark .timer-buttons button {
+            background-color: #ffca28;
+        }
+        .dark .timer-buttons button:hover {
+            background-color: #ffb300;
+        }
+        .dark .theme-toggle {
+            background-color: #007bff;
+        }
+        .dark .theme-toggle:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h2>Ajouter un cours</h2>
+            <label for="subject">Matière</label>
+            <select id="subject">
+                <option value="Français">Français</option>
+                <option value="Maths">Maths</option>
+                <option value="Anglais">Anglais</option>
+                <option value="Espagnol">Espagnol</option>
+                <option value="Histoire-Géo">Histoire-Géo</option>
+                <option value="SVT">SVT</option>
+                <option value="Science Physics">Science Physics</option>
+            </select>
+            
+            <label for="courseName">Nom du cours</label>
+            <input type="text" id="courseName" placeholder="Nom du cours">
+            
+            <label for="courseContent">Contenu du cours</label>
+            <textarea id="courseContent" rows="4" placeholder="Contenu du cours"></textarea>
+            
+            <button onclick="addCourse()">Ajouter le cours</button>
+        </div>
+
+        <div class="course-container">
+            <h2>Liste des cours</h2>
+            <h3>Filtrer par matière</h3>
+            <label for="filterSubject">Matière</label>
+            <select id="filterSubject" onchange="filterCourses()">
+                <option value="Tous">Tous</option>
+                <option value="Français">Français</option>
+                <option value="Maths">Maths</option>
+                <option value="Anglais">Anglais</option>
+                <option value="Espagnol">Espagnol</option>
+                <option value="Histoire-Géo">Histoire-Géo</option>
+                <option value="SVT">SVT</option>
+                <option value="Science Physics">Science Physics</option>
+            </select>
+            <div class="course-list" id="courseList">
+                <!-- Liste des cours ajoutés -->
+            </div>
+        </div>
+    </div>
+
+    <div class="timer-container">
+        <h2>Minuteur</h2>
+        <div class="timer-display" id="timerDisplay">00:00:00</div>
+        <div class="timer-buttons">
+            <button onclick="startTimer(10)">10 min</button>
+            <button onclick="startTimer(20)">20 min</button>
+            <button onclick="startTimer(30)">30 min</button>
+        </div>
+    </div>
+
+    <button class="theme-toggle" onclick="toggleTheme()">Changer de thème</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
